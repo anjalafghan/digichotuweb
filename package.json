@@ -1,0 +1,19 @@
+{
+  "name": "digichotu",
+  "version": "1.0.0",
+  "description": "Web application for the administration of DigiChotu",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "firebase": "^8.2.4",
+    "firebase-admin": "^9.4.2",
+    "firebaseui": "^4.7.1"
+  },
+  "devDependencies": {
+    "ip": "^1.1.5"
+  }
+}

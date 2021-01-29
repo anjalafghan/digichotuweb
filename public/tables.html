@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<link rel="stylesheet" href="css/materialize.css">
+<link rel="icon" href="digichotu.png">
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Menu</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+</head>
+<body>
+  <style>
+    .print {
+        display:none;
+    }
+    .no-print{
+        display:block;
+    }
+    @media print{
+        .print {
+            display:block;
+        }
+        .no-print{
+            display:none;
+        }
+    }
+</style>
+    <!-- --- NAV --- -->
+<div>
+    <nav>
+    <div class="nav-wrapper deep-purple no-print" >
+      <a href="main.html"  class="brand-logo">&nbsp;&nbsp;&nbsp;DigiChotu</a>
+      <ul id="nav-mobile" class="right hide-on-med-and-down">
+        <li><a href="main.html">Home</a></li>
+        <li><a href="tables.html">Tables</a></li>
+        <li><a href="menu.html">Menu</a></li>
+      </ul>
+    </div>
+  </nav>
+</div>
+      <!-- --- NAV --- -->
+
+      <!-- --- MENU --- -->
+  <div class="container">
+    
+  </div>
+     <!-- --- MENU --- -->
+
+<!-- The core Firebase JS SDK is always required and must be listed first -->
+<script src="https://www.gstatic.com/firebasejs/8.0.0/firebase-app.js"></script>
+
+<!-- TODO: Add SDKs for Firebase products that you want to use
+     https://firebase.google.com/docs/web/setup#available-libraries -->
+<script src="https://www.gstatic.com/firebasejs/8.0.0/firebase-analytics.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.0.0/firebase-database.js"></script>
+
+<script>  // Your web app's Firebase configuration
+  // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+  var firebaseConfig = {
+    apiKey: "AIzaSyDQmTfsRxxci3YykQ99SMgYgj1ASe14-DA",
+    authDomain: "digitalchotu-9c435.firebaseapp.com",
+    databaseURL: "https://digitalchotu-9c435.firebaseio.com",
+    projectId: "digitalchotu-9c435",
+    storageBucket: "digitalchotu-9c435.appspot.com",
+    messagingSenderId: "698814685963",
+    appId: "1:698814685963:web:bef5d9ad1901e6e86e780e",
+    measurementId: "G-10V1F849G8"
+  };
+  // Initialize Firebase
+  firebase.initializeApp(firebaseConfig);
+  firebase.analytics();
+  firebase.database();
+  var table = firebase.database().ref().child("Hotels/Rasoi/Orders/jzlhlJ83o82GyBeh");
+
+  table.on("child_added", snap =>{
+    var tablenumber = snap.child("Table_Number").val();
+    if(tablenumber != null){
+      $("#tableNumber").append("Table Number: "+ tablenumber);
+    }   
+  });
+
+  var Menu = firebase.database().ref().child("Hotels/Rasoi/Food/");
+  
+  var table = document.createElement('table');
+for (var i = 1; i < 4; i++){
+    var tr = document.createElement('tr');   
+
+    var td1 = document.createElement('td');
+    var td2 = document.createElement('td');
+
+    var text1 = document.createTextNode('Text1');
+    var text2 = document.createTextNode('Text2');
+
+    td1.appendChild(text1);
+    td2.appendChild(text2);
+    tr.appendChild(td1);
+    tr.appendChild(td2);
+
+    table.appendChild(tr);
+}
+document.body.appendChild(table);
+
+  
+
+</script>
+Icons made by <a href="https://www.flaticon.com/authors/freepik" title="Freepik">Freepik</a> from <a href="https://www.flaticon.com/" title="Flaticon"> www.flaticon.com</a>
+</body>
+</html>
