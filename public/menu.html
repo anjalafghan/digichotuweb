@@ -40,10 +40,11 @@
   </nav>
 
 
-  <div class="container">
-    <a class="waves-effect waves-light deep-purple btn" onclick="adddish()">Add Dish</a>
-    <a class="waves-effect waves-light deep-purple btn">Update Dish</a>
+  <div class="container custom">
+
+    <a class="waves-effect waves-light deep-purple btn" onclick="adddish()">Add / Update Dish</a>
     <a class="waves-effect waves-light deep-purple btn" onclick="removeDish()">Remove Dish</a>
+    <a class="waves-effect waves-light deep-purple btn" onclick="uploadMenu()">Upload Menu</a>
   </div>
  <!-- Insert these scripts at the bottom of the HTML, but before you use any Firebase services -->
 
@@ -81,6 +82,9 @@
       function removeDish(){
         window.location.href="/DeleteDish.html";
       }
+      function uploadMenu(){
+        window.location.href="/UploadMenu.html"
+      }
       var user = firebase.auth().currentUser;
   var name, email, photoUrl, uid, emailVerified;
    firebase.auth().onAuthStateChanged(function(user) {
@@ -105,5 +109,11 @@ db.collection("Hotels").doc("Menu").collection("Starter").get().then((snapshot) 
     </script>
           <script type="text/javascript" src="js/materialize.min.js"></script>
 
+          <style>
+            .custom{
+              margin-top: 10%;
+              margin-left: 35%;
+            }
+          </style>
 </body>
 </html>
