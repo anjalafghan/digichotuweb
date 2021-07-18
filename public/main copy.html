@@ -1,71 +1,76 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-<link rel="stylesheet" href="css/materialize.css">
-<link rel="icon" href="digichotu.png">
 
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DigiChotu</title>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<head>
+  <link rel="stylesheet" href="css/materialize.css">
+  <link rel="icon" href="digichotu.png">
+
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DigiChotu</title>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 </head>
+
 <body>
   <style>
     .print {
-        display:none;
-    }
-    .no-print{
-        display:block;
-    }
-    @media print{
-        .print {
-            display:block;
-        }
-        .no-print{
-            display:none;
-        }
+      display: none;
     }
 
-    p{
+    .no-print {
+      display: block;
+    }
+
+    @media print {
+      .print {
+        display: block;
+      }
+
+      .no-print {
+        display: none;
+      }
+    }
+
+    p {
       margin-left: 25px;
     }
-</style>
-    <!-- --- NAV --- -->
-<div class="no-print">
+  </style>
+  <!-- --- NAV --- -->
+  <div class="no-print">
     <nav>
-    <div class="nav-wrapper deep-purple no-print" >
-      <a href="main.html"  class="brand-logo">&nbsp;&nbsp;&nbsp;DigiChotu</a>
-      <ul id="nav-mobile" class="right hide-on-med-and-down">
-        <li><a href="main.html">Home</a></li>
-        <li><a href="tables.html">Tables</a></li>
-        <li><a href="menu.html">Menu</a></li>
-        <li><a onclick="logout()">Logout</a></li>
-      </ul>
-    </div>
-  </nav>
-</div>
-      <!-- --- NAV --- -->
+      <div class="nav-wrapper deep-purple no-print">
+        <a href="main.html" class="brand-logo">&nbsp;&nbsp;&nbsp;DigiChotu</a>
+        <ul id="nav-mobile" class="right hide-on-med-and-down">
+          <li><a href="main.html">Home</a></li>
+          <li><a href="tables.html">Tables</a></li>
+          <li><a href="menu.html">Menu</a></li>
+          <li><a onclick="logout()">Logout</a></li>
+        </ul>
+      </div>
+    </nav>
+  </div>
+  <!-- --- NAV --- -->
 
-      <!-- ---MENUCARD--- -->
-     <div id="createcard">
+  <!-- ---MENUCARD--- -->
+  <div id="createcard">
 
-     </div>
-      
-
-            <script>
-              var jsPrintAll = function () {
-                  setTimeout(function () {
-                      window.print();
-                  }, 500);
-              }
+  </div>
 
 
-          </script>
-     
-     <!-- --- MenuCard--- -->
+  <script>
+    var jsPrintAll = function () {
+      setTimeout(function () {
+        window.print();
+      }, 500);
+    }
 
 
- <!-- Insert these scripts at the bottom of the HTML, but before you use any Firebase services -->
+  </script>
+
+  <!-- --- MenuCard--- -->
+
+
+  <!-- Insert these scripts at the bottom of the HTML, but before you use any Firebase services -->
 
   <!-- Firebase App (the core Firebase SDK) is always required and must be listed first -->
   <script src="https://www.gstatic.com/firebasejs/8.2.4/firebase-app.js"></script>
@@ -96,219 +101,220 @@
   </script>
 
   <script>
-    var $container = $("<div>",{"class": "container"});
-  var $row = $("<div>",{"class": "row"});
-    var $col =$("<div>",{"class":"col l3 m6 s12"});
-      var $card=$("<div>",{"class":"card  "});
-      var $cardaction=$("<div>",{"class":"card-action no-print"});
-      var $bill=$("<a>",{"class":"waves-effect waves-light deep-purple btn"},{"onclick":"jsPrintAll()"});
-    var $cardContent=$("<div>",{"class":"card-content"});
-      var $cardtitle=$("<span>",{"id":"tableNumber","class":"card-title"});
-        var $p=$("<p>");
-          var $br=$("<br>");
-  linebreak = document.createElement("br");
-  var $n = $("\n");
-  var $ul =$("<ul>");
-    var $li=$("<li>");
-
-          
-
-   var user = firebase.auth().currentUser;
-
-  var name, email, photoUrl, uid, emailVerified;
-
- firebase.auth().onAuthStateChanged(function(user) {
-  if (user) {
-    const db = firebase.firestore();
-    // User is signed in.
-  uid = user.uid; 
+    var $container = $("<div>", { "class": "container" });
+    var $row = $("<div>", { "class": "row" });
+    var $col = $("<div>", { "class": "col l3 m6 s12" });
+    var $card = $("<div>", { "class": "card  " });
+    var $cardaction = $("<div>", { "class": "card-action no-print" });
+    var $bill = $("<a>", { "class": "waves-effect waves-light deep-purple btn" }, { "onclick": "jsPrintAll()" });
+    var $cardContent = $("<div>", { "class": "card-content" });
+    var $cardtitle = $("<span>", { "id": "tableNumber", "class": "card-title" });
+    var $p = $("<p>");
+    var $br = $("<br>");
+    linebreak = document.createElement("br");
+    var $n = $("\n");
+    var $ul = $("<ul>");
+    var $li = $("<li>");
 
 
 
-  // db.collection("Hotels").doc(uid).collection("Users").doc("31U4qFHWOkVfcqfWrcUTAPoRNKG3")
-  // .onSnapshot((doc) =>{
-  //   totalBill = doc.data().totalBill;
-  // });
+    var user = firebase.auth().currentUser;
+
+    var name, email, photoUrl, uid, emailVerified;
+
+    firebase.auth().onAuthStateChanged(function (user) {
+      if (user) {
+        const db = firebase.firestore();
+        // User is signed in.
+        uid = user.uid;
 
 
 
-  db.collection("Hotels").doc(uid).collection("Users")
-    .onSnapshot((querySnapshot) => {
-        var users = [];
-        querySnapshot.forEach((doc)=>{
-        users.push(doc.data().name);
-//TODO ADD user name in doc.name every time user is created.
-  });
-  console.log(users);
-  //users.forEach(buildCards());
-users.forEach((user)=>{
+        // db.collection("Hotels").doc(uid).collection("Users").doc("31U4qFHWOkVfcqfWrcUTAPoRNKG3")
+        // .onSnapshot((doc) =>{
+        //   totalBill = doc.data().totalBill;
+        // });
 
 
 
-  $("#createcard").append($container);
-$container.append($row);
-$row.append($col);
-$col.append($card);
-$card.append($cardContent);
-$cardContent.append($cardtitle);
-$cardtitle.html("Table Number : ");
-$cardContent.append($ul);
-
-
- db.collection("Hotels").doc(uid).collection("Users").doc(user).collection("Table")
-.get().then((querySnapshot) => {
-querySnapshot.forEach((doc) => {
- tno = doc.data().name;
-$cardtitle.empty();
-$cardtitle.append("Table Number: ", tno);
-
-});
-
-});
-
-
-  querySnapshot.forEach((doc) => {
-    db.collection("Hotels").doc(uid).collection("Users").doc(user).collection("Orders")
-    .onSnapshot((orderSnapshot) => {
-      $ul.empty();
-
-      var orders = [];
-       orderSnapshot.forEach((doc) =>{
-        var count = 0;
-
-
-         orders.push(doc.data().name);
-
-let list = document.createElement("li");
-list.append(doc.data().name);
-list.append("\t\t\t");
-
-list.append(doc.data().price);
-
-$ul.append(list);
+        db.collection("Hotels").doc(uid).collection("Users")
+          .onSnapshot((querySnapshot) => {
+            var users = [];
+            querySnapshot.forEach((doc) => {
+              users.push(doc.data().name);
+              //TODO ADD user name in doc.name every time user is created.
+            });
+            console.log(users);
+            //users.forEach(buildCards());
+            users.forEach((user) => {
 
 
 
+              $("#createcard").append($container);
+              $container.append($row);
+              $row.append($col);
+              $col.append($card);
+              $card.append($cardContent);
+              $cardContent.append($cardtitle);
+              $cardtitle.html("Table Number : ");
+              $cardContent.append($ul);
 
-      //  $li.append(doc.data().name);
 
-         //orders.push(doc.data().price);
-        // $li.append(doc.data().price);
-         
+              db.collection("Hotels").doc(uid).collection("Users").doc(user).collection("Table")
+                .get().then((querySnapshot) => {
+                  querySnapshot.forEach((doc) => {
+                    tno = doc.data().name;
+                    $cardtitle.empty();
+                    $cardtitle.append("Table Number: ", tno);
+
+                  });
+
+                });
 
 
-       });
+              querySnapshot.forEach((doc) => {
+                db.collection("Hotels").doc(uid).collection("Users").doc(user).collection("Orders")
+                  .onSnapshot((orderSnapshot) => {
+                    $ul.empty();
 
+                    var orders = [];
+                    orderSnapshot.forEach((doc) => {
+                      var count = 0;
+
+
+                      orders.push(doc.data().name);
+
+                      let list = document.createElement("li");
+                      list.append(doc.data().name);
+                      list.append("\t\t\t");
+
+                      list.append(doc.data().price);
+
+                      $ul.append(list);
+
+
+
+
+                      //  $li.append(doc.data().name);
+
+                      //orders.push(doc.data().price);
+                      // $li.append(doc.data().price);
+
+
+
+                    });
+
+                  });
+
+              });
+              $card.append($p);
+              $p.empty();
+              // $p.append("Total Bill :", totalBill);
+              $card.append($cardaction);
+              $cardaction.append($bill);
+              $bill.empty();
+              $bill.append("Print Bill");
+
+
+
+            });
+            console.log("Current Users, ", users.join(", "));
+
+
+
+
+
+            //   $("#createcard").append($container);
+            // $container.append($row);
+            // $row.append($col);
+            // $col.append($card);
+            // $card.append($cardContent);
+            // $cardContent.append($cardtitle);
+            // $cardtitle.html("Table Number : ");
+            // $cardContent.append($ul);
+
+
+            //  db.collection("Hotels").doc(uid).collection("Users").doc("31U4qFHWOkVfcqfWrcUTAPoRNKG3").collection("Table")
+            // .get().then((querySnapshot) => {
+            // querySnapshot.forEach((doc) => {
+            //  tno = doc.data().name;
+            // $cardtitle.empty();
+            // $cardtitle.append("Table Number: ", tno);
+
+            // });
+
+            // });
+
+
+            //   querySnapshot.forEach((doc) => {
+            //     db.collection("Hotels").doc(uid).collection("Users").doc("31U4qFHWOkVfcqfWrcUTAPoRNKG3").collection("Orders")
+            //     .onSnapshot((orderSnapshot) => {
+            //       $ul.empty();
+
+            //       var orders = [];
+            //        orderSnapshot.forEach((doc) =>{
+            //         var count = 0;
+
+
+            //          orders.push(doc.data().name);
+
+            // let list = document.createElement("li");
+            // list.append(doc.data().name);
+            // list.append("\t\t\t");
+
+            // list.append(doc.data().price);
+
+            // $ul.append(list);
+
+
+
+
+            //       //  $li.append(doc.data().name);
+
+            //          //orders.push(doc.data().price);
+            //         // $li.append(doc.data().price);
+
+
+
+            //        });
+
+            //     });
+
+            //   });
+            // $card.append($p);
+            // $p.empty();
+            // // $p.append("Total Bill :", totalBill);
+            //  $card.append($cardaction);
+            //  $cardaction.append($bill);
+            //  $bill.empty();
+            //  $bill.append("Print Bill");
+
+
+          });
+      }
     });
-   
-  });
-$card.append($p);
-$p.empty();
-// $p.append("Total Bill :", totalBill);
- $card.append($cardaction);
- $cardaction.append($bill);
- $bill.empty();
- $bill.append("Print Bill");
+
+    $($bill).click(function () {
+      window.print();
+    });
+
+    function buildCards() {
 
 
-
-});
-  console.log("Current Users, ", users.join(", "));          
-
-
-
-
-
-//   $("#createcard").append($container);
-// $container.append($row);
-// $row.append($col);
-// $col.append($card);
-// $card.append($cardContent);
-// $cardContent.append($cardtitle);
-// $cardtitle.html("Table Number : ");
-// $cardContent.append($ul);
-
-
-//  db.collection("Hotels").doc(uid).collection("Users").doc("31U4qFHWOkVfcqfWrcUTAPoRNKG3").collection("Table")
-// .get().then((querySnapshot) => {
-// querySnapshot.forEach((doc) => {
-//  tno = doc.data().name;
-// $cardtitle.empty();
-// $cardtitle.append("Table Number: ", tno);
-
-// });
-
-// });
-
-
-//   querySnapshot.forEach((doc) => {
-//     db.collection("Hotels").doc(uid).collection("Users").doc("31U4qFHWOkVfcqfWrcUTAPoRNKG3").collection("Orders")
-//     .onSnapshot((orderSnapshot) => {
-//       $ul.empty();
-
-//       var orders = [];
-//        orderSnapshot.forEach((doc) =>{
-//         var count = 0;
-
-
-//          orders.push(doc.data().name);
-
-// let list = document.createElement("li");
-// list.append(doc.data().name);
-// list.append("\t\t\t");
-
-// list.append(doc.data().price);
-
-// $ul.append(list);
-
-
-
-
-//       //  $li.append(doc.data().name);
-
-//          //orders.push(doc.data().price);
-//         // $li.append(doc.data().price);
-         
-
-
-//        });
-
-//     });
-   
-//   });
-// $card.append($p);
-// $p.empty();
-// // $p.append("Total Bill :", totalBill);
-//  $card.append($cardaction);
-//  $cardaction.append($bill);
-//  $bill.empty();
-//  $bill.append("Print Bill");
-
-
-});
-} 
-});  
-
-$($bill).click(function(){
-  window.print();
-});
-
-function buildCards() {
-
-
-}
+    }
   </script>
 
   <script>
-    function logout(){
+    function logout() {
 
       firebase.auth().signOut().then(() => {
-        window.location.href="/index.html";
-  // Sign-out successful.
-}).catch((error) => {
-  // An error happened.
-});
+        window.location.href = "/index.html";
+        // Sign-out successful.
+      }).catch((error) => {
+        // An error happened.
+      });
     }
   </script>
 </body>
+
 </html>
