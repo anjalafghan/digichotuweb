@@ -52,7 +52,7 @@
   <!-- --- NAV --- -->
 
   <!-- ---MENUCARD--- -->
-  <div id="creatediv">
+  <div id="creatediv" class="">
 
   </div>
 
@@ -157,7 +157,7 @@
             div.id = "createcard" + x;
             document.getElementById('creatediv').append(div);
           }
-        
+
           //users.forEach(buildCards());
           users.forEach((Users) => {
             // Loop according to the array size
@@ -177,7 +177,7 @@
             var $n = $("\n");
             var $ul = $("<ul>");
             var $li = $("<li>");
-       
+
             $("#createcard" + i).append($container);
             $container.append($row);
             $row.append($col);
@@ -197,8 +197,8 @@
             // });
 
             // });
-            
-            
+
+
             querySnapshot.forEach((doc) => {
               db.collection("Hotels/" + uid + "/Users/" + users[c] + "/Orders").get().then((orderSnapshot) => {
                 $ul.empty();
@@ -206,24 +206,21 @@
                 //   console.log(orderSnapshot[i]); 
                 // }
                 var orders = [];
-                
                 orderSnapshot.forEach((doc) => {
                   console.log(orders)
                   var count = 0;
                   orders.push(doc.data().name);
-                  console.log(orders);
                   let list = document.createElement("li");
                   list.append(doc.data().name);
-                  list.append("\t\t\t");
+                  list.append("\t\t\t\t");
                   list.append(doc.data().price);
                   $ul.append(list);
                   $li.append(doc.data().name);
                   orders.push(doc.data().price);
+                  console.log(orders)
                   $li.append(doc.data().price);
                 });
-
               });
-
             });
             $card.append($p);
             $p.empty();
