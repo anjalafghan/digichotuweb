@@ -1,119 +1,168 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-<link rel="stylesheet" href="css/materialize.css">
-<link rel="icon" href="digichotu.png">
 
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Menu</title>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<head>
+  <link rel="stylesheet" href="css/materialize.css">
+  <link rel="icon" href="digichotu.png">
+
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Menu</title>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 </head>
+
 <body>
   <style>
     .print {
-        display:none;
+      display: none;
     }
-    .no-print{
-        display:block;
+
+    .no-print {
+      display: block;
     }
-    @media print{
-        .print {
-            display:block;
-        }
-        .no-print{
-            display:none;
-        }
+
+    @media print {
+      .print {
+        display: block;
+      }
+
+      .no-print {
+        display: none;
+      }
     }
-</style>
-    <!-- --- NAV --- -->
-<div>
+  </style>
+  <!-- --- NAV --- -->
+  <div>
     <nav>
-    <div class="nav-wrapper deep-purple no-print" >
-      <a href="main.html"  class="brand-logo">&nbsp;&nbsp;&nbsp;DigiChotu</a>
-      <ul id="nav-mobile" class="right hide-on-med-and-down">
-        <li><a href="main.html">Home</a></li>
-        <li><a href="tables.html">Tables</a></li>
-        <li><a href="menu.html">Menu</a></li>
-      </ul>
+      <div class="nav-wrapper deep-purple no-print">
+        <a href="main.html" class="brand-logo">&nbsp;&nbsp;&nbsp;DigiChotu</a>
+        <ul id="nav-mobile" class="right hide-on-med-and-down">
+          <li><a href="main.html">Home</a></li>
+          <li><a href="tables.html">Tables</a></li>
+          <li><a href="menu.html">Menu</a></li>
+        </ul>
+      </div>
+    </nav>
+
+
+    <div class="container custom">
+
+      <a class="waves-effect waves-light deep-purple btn" onclick="adddish()">Add / Update Dish</a>
+      <a class="waves-effect waves-light deep-purple btn" onclick="removeDish()">Remove Dish</a>
+      <a class="waves-effect waves-light deep-purple btn" onclick="uploadMenu()">Upload Menu</a>
     </div>
-  </nav>
 
+    <div id="ConTable" style="padding-top: 10px;">
+      <table>
+        <tr style="background-color: rgb(0, 0, 0); color: white; ">
+          <td>Category</td>
+          <td>Price</td>
+          <td>Dish Name</td>
+          <td>Veg</td>
+        </tr>
+        <tbody id="MyTable"></tbody>
+      </table>
 
-  <div class="container custom">
+    </div>
+    <!-- Insert these scripts at the bottom of the HTML, but before you use any Firebase services -->
 
-    <a class="waves-effect waves-light deep-purple btn" onclick="adddish()">Add / Update Dish</a>
-    <a class="waves-effect waves-light deep-purple btn" onclick="removeDish()">Remove Dish</a>
-    <a class="waves-effect waves-light deep-purple btn" onclick="uploadMenu()">Upload Menu</a>
-  </div>
- <!-- Insert these scripts at the bottom of the HTML, but before you use any Firebase services -->
+    <!-- Firebase App (the core Firebase SDK) is always required and must be listed first -->
+    <script src="https://www.gstatic.com/firebasejs/8.2.4/firebase-app.js"></script>
 
-  <!-- Firebase App (the core Firebase SDK) is always required and must be listed first -->
-  <script src="https://www.gstatic.com/firebasejs/8.2.4/firebase-app.js"></script>
+    <!-- If you enabled Analytics in your project, add the Firebase SDK for Analytics -->
+    <script src="https://www.gstatic.com/firebasejs/8.2.4/firebase-analytics.js"></script>
 
-  <!-- If you enabled Analytics in your project, add the Firebase SDK for Analytics -->
-  <script src="https://www.gstatic.com/firebasejs/8.2.4/firebase-analytics.js"></script>
+    <!-- Add Firebase products that you want to use -->
+    <script src="https://www.gstatic.com/firebasejs/8.2.4/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.2.4/firebase-firestore.js"></script>
 
-  <!-- Add Firebase products that you want to use -->
-  <script src="https://www.gstatic.com/firebasejs/8.2.4/firebase-auth.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/8.2.4/firebase-firestore.js"></script>
-
-  <script>
-    // Your web app's Firebase configuration
-    // For Firebase JS SDK v7.20.0 and later, measurementId is optional
-    var firebaseConfig = {
-      apiKey: "AIzaSyDQmTfsRxxci3YykQ99SMgYgj1ASe14-DA",
-      authDomain: "digitalchotu-9c435.firebaseapp.com",
-      databaseURL: "https://digitalchotu-9c435.firebaseio.com",
-      projectId: "digitalchotu-9c435",
-      storageBucket: "digitalchotu-9c435.appspot.com",
-      messagingSenderId: "698814685963",
-      appId: "1:698814685963:web:bef5d9ad1901e6e86e780e",
-      measurementId: "G-10V1F849G8"
-    };
-    // Initialize Firebase
-    firebase.initializeApp(firebaseConfig);
-    firebase.analytics();
-  </script>
     <script>
-      function adddish(){
-        window.location.href="/addDish.html";
+      // Your web app's Firebase configuration
+      // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+      var firebaseConfig = {
+        apiKey: "AIzaSyDQmTfsRxxci3YykQ99SMgYgj1ASe14-DA",
+        authDomain: "digitalchotu-9c435.firebaseapp.com",
+        databaseURL: "https://digitalchotu-9c435.firebaseio.com",
+        projectId: "digitalchotu-9c435",
+        storageBucket: "digitalchotu-9c435.appspot.com",
+        messagingSenderId: "698814685963",
+        appId: "1:698814685963:web:bef5d9ad1901e6e86e780e",
+        measurementId: "G-10V1F849G8"
+      };
+      // Initialize Firebase
+      firebase.initializeApp(firebaseConfig);
+      firebase.analytics();
+    </script>
+    <script>
+      function adddish() {
+        window.location.href = "/addDish.html";
       }
-      function removeDish(){
-        window.location.href="/DeleteDish.html";
+      function removeDish() {
+        window.location.href = "/DeleteDish.html";
       }
-      function uploadMenu(){
-        window.location.href="/UploadMenu.html"
+      function uploadMenu() {
+        window.location.href = "/UploadMenu.html"
       }
       var user = firebase.auth().currentUser;
-  var name, email, photoUrl, uid, emailVerified;
-   firebase.auth().onAuthStateChanged(function(user) {
-    if (user) {
-      const db = firebase.firestore();
-    // User is signed in.
-  uid = user.uid; 
-db.collection("Hotels").doc("Menu").collection("Starter").get().then((snapshot) => {
-  snapshot.docs.forEach( doc => {
-    console.log(doc.data());
-  })
-})
+      var name, email, photoUrl, uid, emailVerified;
+      firebase.auth().onAuthStateChanged(function (user) {
+        if (user) {
+          const db = firebase.firestore();
+          // User is signed in.
+          uid = user.uid;
+          var course = [], count = [], temp = [];
+          var num;
+          // to get the count of the items in category
+          db.collection("Hotels/" + uid + "/Menu").get().then((snapshot) => {
+            // db.collection("Hotels").doc("Menu").collection("Starter").get().then((snapshot) => {
+            snapshot.docs.forEach(doc => {
+              count.push(doc.data().count);
+              var arraynum = count.map((i) => Number(i));
+              num = parseInt(arraynum);
 
-  
-  } else {
-    // No user is signed in.
-    console.log("empty");
-
-  }
-});   
-  
-    </script>
-          <script type="text/javascript" src="js/materialize.min.js"></script>
-
-          <style>
-            .custom{
-              margin-top: 10%;
-              margin-left: 35%;
+            })
+            // to get in loop and get those item in a array
+            for (x = 1; x <= num; x++) {
+              db.collection("Hotels/" + uid + "/Menu/" + "Category/" + x).get().then((snapshot) => {
+                snapshot.docs.forEach(doc => {
+                  course.push(doc.data());
+                  temp.push(doc.data());
+                  buildTable(temp);
+                  temp = []
+                })
+              })
             }
-          </style>
+          })
+
+          function buildTable(data) {
+            var table = document.getElementById("MyTable");
+            for (i = 0; i < data.length; i++) {
+              var row = `<tr> 
+                        <td>${data[i].Category}</td>
+                        <td> ${data[i].Price}</td>
+                        <td>${data[i].name}</td>
+                        <td>${data[i].veg}</td>
+                        </tr>`
+              table.innerHTML += row
+
+            }
+          }
+        } else {
+          // No user is signed in.
+          console.log("empty");
+
+        }
+      });
+
+    </script>
+    <script type="text/javascript" src="js/materialize.min.js"></script>
+
+    <style>
+      .custom {
+        margin-top: 10%;
+        margin-left: 35%;
+      }
+    </style>
 </body>
+
 </html>

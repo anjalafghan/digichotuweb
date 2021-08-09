@@ -21,6 +21,18 @@
       display: block;
     }
 
+    .column {
+      float: left;
+      width: 50%;
+    }
+
+    /* Clear floats after the columns */
+    .row:after {
+      content: "";
+      display: table;
+      clear: both;
+    }
+
     @media print {
       .print {
         display: block;
@@ -52,8 +64,9 @@
   <!-- --- NAV --- -->
 
   <!-- ---MENUCARD--- -->
-  <div id="creatediv" class="">
-
+  <div id="creatediv">
+    <!-- <div  class="column">
+    </div> -->
   </div>
 
 
@@ -150,22 +163,42 @@
           // console.log(users);
           // $("#creatediv").append($div);
           // console.log($('#creatediv').length)
-          var i = 0;
-          var c = -1;
-          for (x = 1; x <= users.length; x++) {
-            var div = document.createElement('div');
-            div.id = "createcard" + x;
-            document.getElementById('creatediv').append(div);
-          }
+          var i = 0, c = 0;
+          var Colcount = users.length;
 
+          while (Colcount > 0) {
+            Colcount = Math.floor(Colcount / 2);
+            i++;
+          }
+          console.log(i);
+          for ( c = 1; c <= i; c++) {
+            var div = document.createElement('div');
+            div.id = "Colcard" + c;
+            document.getElementById('creatediv').append(div);
+            var element = document.getElementById('Colcard' + c);
+            element.classList.add("row");
+          }
+          c= 1 ;
+          for (x = 1; x <= users.length; x++) {
+              var div = document.createElement('div');
+              div.id = "createcard" + x;
+              document.getElementById('Colcard' + c).append(div);
+              var element = document.getElementById('createcard'+x);
+              element.classList.add("column");
+              if(x%2 == 0 ){
+                c++
+              }
+            }
+          i = 0;
+          c = -1;
           //users.forEach(buildCards());
           users.forEach((Users) => {
             // Loop according to the array size
             i++;
             c++;
             var $container = $("<div>", { "class": "container" });
-            var $row = $("<div>", { "class": "row" });
-            var $col = $("<div>", { "class": "col l3 m6 s12" });
+            var $row = $("<div>", { "class": "row " });
+            var $col = $("<div>", { "class": "col 13 m12 s12" });
             var $card = $("<div>", { "class": "card  " });
             var $cardaction = $("<div>", { "class": "card-action no-print" });
             var $bill = $("<a>", { "class": "waves-effect waves-light deep-purple btn" }, { "onclick": "jsPrintAll()" });
@@ -207,7 +240,6 @@
                 // }
                 var orders = [];
                 orderSnapshot.forEach((doc) => {
-                  console.log(orders)
                   var count = 0;
                   orders.push(doc.data().name);
                   let list = document.createElement("li");
@@ -217,7 +249,6 @@
                   $ul.append(list);
                   $li.append(doc.data().name);
                   orders.push(doc.data().price);
-                  console.log(orders)
                   $li.append(doc.data().price);
                 });
               });
