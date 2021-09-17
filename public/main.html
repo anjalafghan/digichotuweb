@@ -26,6 +26,10 @@
       width: 50%;
     }
 
+    #kot_display {
+      display: none;
+    }
+
     /* Clear floats after the columns */
     .row:after {
       content: "";
@@ -34,6 +38,11 @@
     }
 
     @media print {
+      #kot_display {
+        display: block;
+        background-color: pink;
+      }
+
       .print {
         display: block;
       }
@@ -57,6 +66,7 @@
           <li><a href="tables.html">Tables</a></li>
           <li><a href="menu.html">Menu</a></li>
           <li><a onclick="logout()">Logout</a></li>
+          <li><a onclick="kotprint()">Kot</a></li>
         </ul>
       </div>
     </nav>
@@ -69,16 +79,9 @@
     </div> -->
   </div>
 
-
-  <script>
-    var jsPrintAll = function () {
-      setTimeout(function () {
-        window.print();
-      }, 500);
-    }
-
-
-  </script>
+  <div id="kot_display" class="print">
+    <p id="kot"></p>
+  </div>
 
   <!-- --- MenuCard--- -->
 
@@ -112,36 +115,30 @@
     firebase.initializeApp(firebaseConfig);
     firebase.analytics();
   </script>
+
   <script>
-    // var $container = $("<div>", { "class": "container" });
-    // var $row = $("<div>", { "class": "row" });
-    // var $col = $("<div>", { "class": "col l3 m6 s12" });
-    // var $card = $("<div>", { "class": "card  " });
-    var $cardaction = $("<div>", { "class": "card-action no-print" });
-    var $bill = $("<a>", { "class": "waves-effect waves-light deep-purple btn" }, { "onclick": "jsPrintAll()" });
-    // var $cardContent = $("<div>", { "class": "card-content" });
-    // var $cardtitle = $("<span>", { "id": "tableNumber", "class": "card-title" });
-    var $p = $("<p>");
-    var $br = $("<br>");
-    linebreak = document.createElement("br");
-    var $n = $("\n");
-    var $ul = $("<ul>");
+
+    // var $cardaction = $("<div>", { "class": "card-action no-print" });
+    // var $bill = $("<a>", { "class": "waves-effect waves-light deep-purple btn", "onclick": "jsPrintAll()" });
+    // var $p = $("<p>");
+    // var $br = $("<br>");
+    // linebreak = document.createElement("br");
+    // var $n = $("\n");
+    // var $ul = $("<ul>");
     var $li = $("<li>");
-
-
-
     var user = firebase.auth().currentUser;
     var name, email, photoUrl, uid, emailVerified, Identifier;
+    var users = [];;
+
+
 
     firebase.auth().onAuthStateChanged(function (user) {
       if (user) {
         const db = firebase.firestore();
         // User is signed in.
-        console.log(user);
         uid = user.uid;
-        // console.log(uid);
-        // const Collectiongrp = db.collectionGroup(uid).where("uid" , "==",uid)
 
+        // const Collectiongrp = db.collectionGroup(uid).where("uid" , "==",uid)
         // Collectiongrp.onSnapshot(querySnapshot=>{
         //   querySnapshot.forEach((doc)=>{
         //     console.log(doc.data());
@@ -152,7 +149,7 @@
         //   totalBill = doc.data().totalBill;
 
         // });
-        var users = [];
+
         // db.collection("Hotels").doc(uid).collection("Users").onSnapshot(querySnapshot => {
         db.collection("Hotels/" + uid + "/Users").get().then((querySnapshot) => {
           querySnapshot.forEach((doc) => {
@@ -160,35 +157,32 @@
             //TODO ADD user name in doc.name every time user is created.
           });
 
-          // console.log(users);
           // $("#creatediv").append($div);
           // console.log($('#creatediv').length)
           var i = 0, c = 0;
           var Colcount = users.length;
-
           while (Colcount > 0) {
             Colcount = Math.floor(Colcount / 2);
             i++;
           }
-          console.log(i);
-          for ( c = 1; c <= i; c++) {
+          for (c = 1; c <= i; c++) {
             var div = document.createElement('div');
             div.id = "Colcard" + c;
             document.getElementById('creatediv').append(div);
             var element = document.getElementById('Colcard' + c);
             element.classList.add("row");
           }
-          c= 1 ;
+          c = 1;
           for (x = 1; x <= users.length; x++) {
-              var div = document.createElement('div');
-              div.id = "createcard" + x;
-              document.getElementById('Colcard' + c).append(div);
-              var element = document.getElementById('createcard'+x);
-              element.classList.add("column");
-              if(x%2 == 0 ){
-                c++
-              }
+            var div = document.createElement('div');
+            div.id = "createcard" + x;
+            document.getElementById('Colcard' + c).append(div);
+            var element = document.getElementById('createcard' + x);
+            element.classList.add("column");
+            if (x % 2 == 0) {
+              c++
             }
+          }
           i = 0;
           c = -1;
           //users.forEach(buildCards());
@@ -197,11 +191,11 @@
             i++;
             c++;
             var $container = $("<div>", { "class": "container" });
-            var $row = $("<div>", { "class": "row " });
+            var $row = $("<div>", { "class": "row" });
             var $col = $("<div>", { "class": "col 13 m12 s12" });
             var $card = $("<div>", { "class": "card  " });
             var $cardaction = $("<div>", { "class": "card-action no-print" });
-            var $bill = $("<a>", { "class": "waves-effect waves-light deep-purple btn" }, { "onclick": "jsPrintAll()" });
+            var $bill = $("<button>", { "id": "tableprintbtn " + i, "class": "waves-effect waves-light deep-purple btn", "onclick": "jsPrintAll(" + i + ")" });
             var $cardContent = $("<div>", { "class": "card-content" });
             var $cardtitle = $("<span>", { "id": "tableNumber", "class": "card-title" });
             var $p = $("<p>");
@@ -211,8 +205,9 @@
             var $ul = $("<ul>");
             var $li = $("<li>");
 
-            $("#createcard" + i).append($container);
-            $container.append($row);
+
+            $("#createcard" + i).append($row);
+            // $container.append($row);
             $row.append($col);
             $col.append($card);
             $card.append($cardContent);
@@ -220,49 +215,54 @@
             $cardtitle.html("Table Number : ");
             $cardContent.append($ul);
 
-            //  db.collection("Hotels").doc(uid).collection("Users").doc(user).collection("Table")
-            // .get().then((querySnapshot) => {
-            // querySnapshot.forEach((doc) => {
-            //  tno = doc.data().name;
-            // $cardtitle.empty();
-            // $cardtitle.append("Table Number: ", tno);
+            // db.collection("Hotels/" + uid + "/Users/" + Users + "/Table").get().then((querySnapshot) => {
+            //   querySnapshot.forEach((doc) => {
+            //     tno = doc.data().name;
+            //    
+            //   });
 
             // });
-
-            // });
-
-
-            querySnapshot.forEach((doc) => {
-              db.collection("Hotels/" + uid + "/Users/" + users[c] + "/Orders").get().then((orderSnapshot) => {
-                $ul.empty();
-                // for (var i in orderSnapshot) {
-                //   console.log(orderSnapshot[i]); 
-                // }
-                var orders = [];
-                orderSnapshot.forEach((doc) => {
-                  var count = 0;
-                  orders.push(doc.data().name);
-                  let list = document.createElement("li");
-                  list.append(doc.data().name);
-                  list.append("\t\t\t\t");
-                  list.append(doc.data().price);
-                  $ul.append(list);
-                  $li.append(doc.data().name);
-                  orders.push(doc.data().price);
-                  $li.append(doc.data().price);
-                });
+            db.collection("Hotels/" + uid + "/Users/" + Users + "/Table").get().then((querySnapshot) => {
+              querySnapshot.forEach((doc) => {
+                tno = doc.data().name;
+                $cardtitle.empty();
+                $cardtitle.append("Table Number: ", tno);
               });
             });
+            // querySnapshot.forEach((doc) => {
+            db.collection("Hotels/" + uid + "/Users/" + users[c] + "/Orders").get().then((orderSnapshot) => {
+              $ul.empty();
+              // for (var i in orderSnapshot) {
+              //   console.log(orderSnapshot[i]); 
+              // }
+              var orders = [];
+              orderSnapshot.forEach((doc) => {
+                var count = 0;
+                orders.push(doc.data().name);
+                let list = document.createElement("li");
+                list.append(doc.data().name);
+                list.append("\t\t\t\t");
+                list.append(doc.data().price);
+                $ul.append(list);
+                $li.append(doc.data().name);
+                orders.push(doc.data().price);
+                $li.append(doc.data().price);
+
+              });
+            });
+            // });
             $card.append($p);
             $p.empty();
             // $p.append("Total Bill :", totalBill);
             $card.append($cardaction);
             $cardaction.append($bill);
-            $bill.empty();
-            $bill.append("Print Bill");
-
-
-
+            db.collection("Hotels/" + uid + "/Users/" + Users + "/Table").get().then((querySnapshot) => {
+              querySnapshot.forEach((doc) => {
+                tno = doc.data().name;
+                $bill.empty();
+                $bill.append("Print Bill for Table: ", tno);
+              });
+            });
           });
           console.log("Current Users, ", users.join(", "));
 
@@ -270,14 +270,108 @@
       }
     });
 
-    $($bill).click(function () {
-      window.print();
-    });
 
+    // function printscreen() {
+    //   window.print();
+
+    // }  
+    function jsPrintAll(num) {
+      setTimeout(function () {
+        var x = document.getElementById("tableprintbtn " + num).textContent;
+        x = x.slice(x.length - 1, x.length);
+        firebase.auth().onAuthStateChanged(function (user) {
+          if (user) {
+            const db = firebase.firestore();
+            uid = user.uid;
+            var table = [], ordernames = [];
+            for (var x = 0; x <= users.length; x++) {
+              console.log(users[x]);
+              db.collection("Hotels/" + uid + "/Users/" + users[x] + "/Table").get().then((querySnapshot) => {
+                querySnapshot.forEach((doc) => {
+                  table.push(doc.data().name);
+                });
+                if (parseInt(table) == num) {
+                  // console.log(num)
+                  db.collection("Hotels/" + uid + "/Users/" + users[x] + "/Orders").get().then((querySnapshot) => {
+                    console.log(users[x]);
+                    querySnapshot.forEach((doc) => {
+                      ordernames.push(doc.data().name); 
+                    });
+                  });
+                }
+                table = []
+              });
+            }
+          }
+        });
+        // window.print();
+      }, 500);
+    }
     function buildCards() {
 
+    }
+
+    function kot(a) {
+      console.log("im first kot");
+      a.document.write("<html><body>");
+      a.document.write(`<style>
+        .btn {
+            width: 300px;
+            height: 30px;
+            border-radius: 30px;
+        }
+        @media print{
+        .btn{
+          display:none;
+        } 
+        {
+          @page{size: 78mm 49mm;}
+        }}
+        </style>`);
+      firebase.auth().onAuthStateChanged(function (user) {
+        if (user) {
+          const db = firebase.firestore();
+          uid = user.uid;
+          var table = [], ordernames = [];
+          for (var x = 0; x <= users.length; x++) {
+            // console.log(users[x]);
+            db.collection("Hotels/" + uid + "/Users/" + users[x] + "/Table").get().then((querySnapshot) => {
+              querySnapshot.forEach((doc) => {
+                table.push(doc.data().name);
+              });
+              a.document.write("<h3>Table No.: ", table, "</h3>")
+              table = [];
+            });
+            db.collection("Hotels/" + uid + "/Users/" + users[x] + "/Orders").get().then((querySnapshot) => {
+              querySnapshot.forEach((doc) => {
+                ordernames.push(doc.data().name);
+
+              });
+              a.document.write("<h5>", ordernames, "</h5>")
+              ordernames = [];
+
+            });
+          }
+
+        }
+      });
+      return true;
 
     }
+    function kotprint() {
+      var a = window.open("", "", "height=500, width=500");
+      if (kot(a)) {
+
+        console.log("im first kotprint");
+      }
+
+      a.document.write('<input type="submit" value="print" class="btn" onclick="window.print()"></body></html>');
+
+      // a.window.print();
+    }
+    // function kotdisplay(order, table) {
+      // var divContents = document.getElementById("card-content").innerHTML;
+
   </script>
 
   <script>
@@ -291,6 +385,7 @@
       });
     }
   </script>
+  <!-- <script src="kotpage.js"></script> -->
 </body>
 
 </html>
